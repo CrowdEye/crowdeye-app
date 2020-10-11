@@ -1,26 +1,86 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+import Sidenav from './components/sidenav'
+import HeaderNav from './components/header'
+import Dashboard from './pages/dashboard'
+
+import Camera from './pages/camera'
+
+import { Layout } from 'antd';
+
+const { Header, Sider, Content } = Layout;
+
+
+
+const PAGES = {
+  'dashboard': <Dashboard />
+}
+
+class App extends React.Component {
+  state = {
+    theme: 'light',
+    comp: "cam-1",
+    camera: true,
+    camID: '1'
+  };
+
+  changeTheme = value => {
+    this.setState({
+      theme: value ? 'dark' : 'light',
+    });
+  };
+
+  setContent = (to) => {
+    if (to.substring(0, 3) === "cam") // Selected tab is a cam
+    {
+      this.setState({
+        comp: to,
+        camera: true,
+        camID: to.substring(4),
+      })
+    } else {
+      this.setState({
+        comp: to,
+        camera: false,
+        camID: null,
+      })
+    }
+  }
+
+
+
+  render() {
+    var comp = PAGES[this.state.comp]!== undefined 
+                    ? PAGES[this.state.comp] 
+                    : `Not Found :(---------${this.state.comp}`
+    if (this.state.camera)
+    {
+      comp = <Camera cameraNodeId={this.state.camID} />
+    }
+    return (
+      <div className="App">
+               
+      <Layout>  
+        <Header><HeaderNav /></Header>
+        <Layout>
+          <Sider>
+            <Sidenav theme={this.state.theme} onChangeSelected={this.setContent} />
+          </Sider>
+          <Content>
+            <div style={{marginLeft: 128}}>
+              {comp}
+            </div>
+          </Content>
+        </Layout>
+      </Layout>
+
+
+
+      </div>
+    );
+  }
 }
 
 export default App;
