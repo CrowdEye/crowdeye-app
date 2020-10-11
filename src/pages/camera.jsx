@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Spin } from 'antd';
+import { Modal, Button, PageHeader, Spin } from 'antd';
 import { Collapse } from 'antd';
 
 const { Panel } = Collapse;
@@ -11,9 +11,31 @@ class Camera extends React.Component {
         this.state = {
           error: null,
           isLoaded: false,
-          data: []
+          data: [],
+          visible: false
         };
     }
+
+    showModal = () => {
+      this.setState({
+        visible: true,
+      });
+    };
+  
+    handleOk = e => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    };
+  
+    handleCancel = e => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    };
+  
 
     componentDidMount() {
         fetch(`http://localhost:5510/api/get/${this.props.cameraNodeId}`)
@@ -52,7 +74,10 @@ class Camera extends React.Component {
           });
         }
       )
+    }
 
+    moveLine() {
+      alert("Click on the first and second point on the image")
     }
 
     
@@ -68,6 +93,11 @@ class Camera extends React.Component {
                 <Collapse ghost>
                     <Panel header="Annoted Stream" key="1">
                         <img src={`http://localhost:5500/stream/${data.node_id}/annotated`} alt="Annoted camera stream"/>
+                        <br />
+                        <br />
+                        <Button onClick={this.showModal}>
+                            Move Line
+                        </Button>
                     </Panel>
                     <Panel header="Raw Stream" key="2">
                         <img src={data.camera_ip} alt="Camera stream" />
@@ -76,7 +106,7 @@ class Camera extends React.Component {
                         <p>Actions</p>
                     </Panel>
                 </Collapse>
-          );
+            );
         }
     
         return (
@@ -88,6 +118,15 @@ class Camera extends React.Component {
                     backIcon={<></>}
                 />
                 {comp}
+                <Modal
+                  title="Move Line"
+                  visible={this.state.visible}
+                  onOk={this.handleOk}
+                  onCancel={this.handleCancel}
+                >
+                  <p>Click on the annoted image twice to move the position of the line</p>
+                </Modal>
+
             </>
         );
     }
