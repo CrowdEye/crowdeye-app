@@ -6,6 +6,8 @@ import Sidenav from './components/sidenav'
 import HeaderNav from './components/header'
 import Dashboard from './pages/dashboard'
 
+import Settings from './pages/settings'
+
 import Camera from './pages/camera'
 
 import { Layout } from 'antd';
@@ -15,15 +17,16 @@ const { Header, Sider, Content } = Layout;
 
 
 const PAGES = {
-  'dashboard': <Dashboard />
+  'dashboard': <Dashboard />,
+  'settings': <Settings />
 }
 
 class App extends React.Component {
   state = {
     theme: 'light',
-    comp: "cam-1",
-    camera: true,
-    camID: '1'
+    comp: "dashboard",
+    camera: false,
+    camID: null
   };
 
   changeTheme = value => {

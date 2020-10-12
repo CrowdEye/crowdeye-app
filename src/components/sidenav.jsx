@@ -8,7 +8,7 @@ const { SubMenu } = Menu;
 class Sider extends React.Component {
   state = {
     theme: 'light',
-    current: 'cam-1',
+    current: 'dashboard',
     error: null,
     isLoaded: false,
     data: null

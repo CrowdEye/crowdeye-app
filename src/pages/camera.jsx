@@ -1,6 +1,8 @@
 import React from 'react';
-import { Modal, Button, PageHeader, Spin } from 'antd';
-import { Collapse } from 'antd';
+import { Modal, Button, PageHeader, Spin, Statistic } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
+import { Collapse, Row } from 'antd';
 
 const { Panel } = Collapse;
 
@@ -117,6 +119,7 @@ class Camera extends React.Component {
                     subTitle={`node id: ${this.props.cameraNodeId}`}
                     backIcon={<></>}
                 />
+                <Statistic style={{marginLeft: 32}} prefix={<UserOutlined />} title="People detected" value={12} />
                 {comp}
                 <Modal
                   title="Move Line"
