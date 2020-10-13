@@ -10,10 +10,10 @@ import Settings from './pages/settings'
 
 import Camera from './pages/camera'
 
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
+
 
 const { Header, Sider, Content } = Layout;
-
 
 
 const PAGES = {

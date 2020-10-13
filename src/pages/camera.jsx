@@ -2,9 +2,13 @@ import React from 'react';
 import { Modal, Button, PageHeader, Spin, Statistic } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-import { Collapse, Row } from 'antd';
+import { Collapse, message } from 'antd';
+
+import ReconnectingWebSocket from 'reconnecting-websocket';
+
 
 const { Panel } = Collapse;
+
 
 
 class Camera extends React.Component {
@@ -16,6 +20,7 @@ class Camera extends React.Component {
           data: [],
           visible: false
         };
+        
     }
 
     showModal = () => {
@@ -40,11 +45,31 @@ class Camera extends React.Component {
   
 
     componentDidMount() {
-        fetch(`http://localhost:5510/api/get/${this.props.cameraNodeId}`)
+      const socket = new ReconnectingWebSocket(`ws://localhost:5510/ws/cam/${this.props.cameraNodeId}/`);
+
+      socket.addEventListener('open', function (event) {
+        console.log("Connected");
+        message.success('Connected to server');
+        // socket.send('Hello Server!');
+      });
+      socket.addEventListener('close', function (event) {
+        console.log("Disconnected");
+        message.error('Disconnected from server');
+        // socket.send('Hello Server!');
+      });
+
+      // Listen for messages
+      socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+      });
+
+
+
+      fetch(`http://localhost:5510/api/get/${this.props.cameraNodeId}`)
           .then(res => res.json())
           .then(
             (result) => {
-                console.log(result)
+                // console.log(result)
               this.setState({
                 isLoaded: true,
                 data: result
@@ -63,7 +88,7 @@ class Camera extends React.Component {
       .then(res => res.json())
       .then(
         (result) => {
-            console.log(result)
+            // console.log(result)
           this.setState({
             isLoaded: true,
             data: result
