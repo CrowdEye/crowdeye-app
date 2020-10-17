@@ -1,19 +1,22 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { FolderViewOutlined, VideoCameraOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 
 const { SubMenu } = Menu;
 
 class Sider extends React.Component {
-  state = {
-    theme: 'light',
-    current: 'dashboard',
-    error: null,
-    isLoaded: false,
-    data: null
-
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      theme: 'light',
+      current: 'dashboard',
+      error: null,
+      isLoaded: false,
+      data: null
+    };
+    this.fetchCams = this.fetchCams.bind(this)
+  }
 
   changeTheme = value => {
     this.setState({
@@ -29,30 +32,41 @@ class Sider extends React.Component {
     this.props.onChangeSelected(e.key)
   };
 
-  componentDidMount() {
+  fetchCams() {
+    this.setState({
+      isLoaded: false,
+      data: null,
+      error: null
+    })
+    console.log("Fetching")
     fetch("http://localhost:5510/api/list")
-        .then(res => res.json())
-        .then(
-            (res) => {
-                this.setState({
-                    isLoaded: true,
-                    data: res.data
-                });
-            },
-            (error) => {
-                this.setState({
-                isLoaded: true,
-                error
-                });
-            }
-        )
+      .then(res => res.json())
+      .then(
+          (res) => {
+              this.setState({
+                  isLoaded: true,
+                  data: res.data
+              });
+          },
+          (error) => {
+              this.setState({
+              isLoaded: true,
+              error
+              });
+          }
+      )
+
+  }
+
+  componentDidMount() {
+    this.fetchCams();
   }
 
   render() {
     const { error, isLoaded } = this.state;
     var camList = "Error";
     if (error) {
-        camList = (<div>Error: {error.message}</div>);
+        camList = (<div style={{marginLeft: 32}}>Error: {error.message} <Button size="small" onClick={this.fetchCams}>Retry</Button></div>);
     } else if (!isLoaded) {
         camList = (<Spin style={{marginLeft: '40%'}}/>);
     } else {
