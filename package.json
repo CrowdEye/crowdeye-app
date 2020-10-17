@@ -1,5 +1,9 @@
 {
   "name": "crowdeyealtdesign",
+  "description": "crowdeye user interface",
+  "author": {
+    "name": "@tommcn"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,6 +11,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.7.0",
+    "electron-is-dev": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
@@ -17,10 +22,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "electron .",
-    "electron-dev": "ELECTRON_START_URL=http://localhost:3001 electron ."
+    "electron": "ELECTRON_IS_DEV=0 electron .",
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && ELECTRON_IS_DEV=1 electron .\"",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "main": "src/electron-starter.js",
+  "main": "public/electron.js",
   "homepage": "./",
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +45,21 @@
     ]
   },
   "devDependencies": {
-    "electron": "^10.1.3"
+    "concurrently": "^5.3.0",
+    "electron": "^10.1.3",
+    "electron-builder": "^22.9.1",
+    "wait-on": "^5.2.0"
+  },
+  "build": {
+    "extends": null,
+    "appId": "ca.electron.crowdeyealtdesign",
+    "files": [
+      "public/electron.js",
+      "build/**/*",
+      "node_modules/**/*"
+    ],  
+    "mac": {
+      "category": "your.app.category.type"
+    }
   }
 }
