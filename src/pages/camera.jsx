@@ -54,8 +54,7 @@ class Camera extends React.Component {
       });
       socket.addEventListener('close', function (event) {
         console.log("Disconnected");
-        message.error('Disconnected from server');
-        // socket.send('Hello Server!');
+r        message.error('Disconnected from server');
       });
 
       // Listen for messages
@@ -84,23 +83,23 @@ class Camera extends React.Component {
           )
     }
     componentDidUpdate() {
-      fetch(`http://localhost:5510/api/get/${this.props.cameraNodeId}`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-            // console.log(result)
-          this.setState({
-            isLoaded: true,
-            data: result
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+      // fetch(`http://localhost:5510/api/get/${this.props.cameraNodeId}`)
+      // .then(res => res.json())
+      // .then(
+      //   (result) => {
+      //       // console.log(result)
+      //     this.setState({
+      //       isLoaded: true,
+      //       data: result
+      //     });
+      //   },
+      //   (error) => {
+      //     this.setState({
+      //       isLoaded: true,
+      //       error
+      //     });
+      //   }
+      // )
     }
 
     moveLine() {
