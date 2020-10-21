@@ -54,7 +54,7 @@ class Camera extends React.Component {
       });
       socket.addEventListener('close', function (event) {
         console.log("Disconnected");
-r        message.error('Disconnected from server');
+        message.error('Disconnected from server');
       });
 
       // Listen for messages
